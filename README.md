@@ -23,3 +23,6 @@ Ensure your React frontend and Node.js backend servers are running locally on po
 To run all Playwright tests with the headed browser (for UI test observation):
 npx playwright test --headed
 npx playwright test
+
+##Report
+npx playwright show-report --port 9330
