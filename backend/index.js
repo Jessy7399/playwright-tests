@@ -4,18 +4,15 @@ const cors = require('cors');
 const app = express();
 const PORT = 8080;
 
-// CORS setup
 app.use(cors({
-  origin: 'http://localhost:3000', // React dev server origin
+  origin: 'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type'],
   credentials: true,
 }));
 
-// Parse JSON bodies
 app.use(express.json());
 
-// Logger middleware
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   console.log('Headers:', req.headers);
@@ -23,14 +20,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// In-memory users list
 const users = [
   { username: 'mary', password: 'ma@07031999', email: 'mary@example.com' },
   { username: 'testuser', password: 'password123', email: 'testuser@example.com' },
   { username: 'testuser1', password: 'password1234', email: 'testuser1@example.com' },
 ];
 
-// In-memory items list for waste collection
 let items = [
   { id: 1, location: 'Berlin', weight: 12, type: 'Plastic', collected: 'Yes' },
   { id: 2, location: 'Munich', weight: 25, type: 'Organic', collected: 'No' },
@@ -44,14 +39,12 @@ let items = [
   { id: 10, location: 'Nuremberg', weight: 22, type: 'Glass', collected: 'Yes' },
 ];
 
-// Helper function to find user by username or email
 function findUser(username, email) {
   return users.find(
     (user) => user.username === username || user.email === email
   );
 }
 
-// Register endpoint
 app.post('/register', (req, res) => {
   const { username, password, email } = req.body;
 
@@ -67,7 +60,6 @@ app.post('/register', (req, res) => {
   res.status(201).json({ message: 'User registered successfully!' });
 });
 
-// Login endpoint
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
@@ -88,18 +80,15 @@ app.post('/login', (req, res) => {
   res.json({ message: 'Login successful' });
 });
 
-// Logout endpoint
+
 app.post('/logout', (req, res) => {
-  // No session management here, so just send success message
   res.json({ message: 'Logout successful' });
 });
 
-// GET /items - list all items
 app.get('/items', (req, res) => {
   res.json(items);
 });
 
-// POST /items - create new item
 app.post('/items', (req, res) => {
   const newItem = req.body;
 
@@ -117,7 +106,6 @@ app.post('/items', (req, res) => {
   res.status(201).json(newItem);
 });
 
-// PUT /items/:id - update an existing item
 app.put('/items/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const index = items.findIndex(i => i.id === id);
@@ -131,7 +119,6 @@ app.put('/items/:id', (req, res) => {
   res.json(updatedItem);
 });
 
-// DELETE /items/:id - delete an item
 app.delete('/items/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const index = items.findIndex(i => i.id === id);
@@ -144,12 +131,10 @@ app.delete('/items/:id', (req, res) => {
   res.status(204).send();
 });
 
-// Test GET endpoint
 app.get('/test', (req, res) => {
   res.send('Backend is up and running!');
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

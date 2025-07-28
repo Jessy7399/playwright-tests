@@ -10,10 +10,11 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "newman": "^6.2.1",
+    "playwright": "^1.54.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "playwright": "^1.54.1"
+    "react-scripts": "5.0.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.1",

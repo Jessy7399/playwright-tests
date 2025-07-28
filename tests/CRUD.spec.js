@@ -315,7 +315,7 @@ test('CRUD', async ({ page }) => {
     await editButton.click();
     await page.waitForTimeout(2000);
     const editingRow = page.locator('tbody tr', {
-     has: page.getByRole('button', { name: 'Save' }) // More reliable than placeholder
+     has: page.getByRole('button', { name: 'Save' })
     });
     await page.waitForTimeout(6000);
     const inputLoc = editingRow.locator('input[name="location"]');

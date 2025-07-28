@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './login';
-import WasteTable from './WasteTable'; // your waste management page component
+import WasteTable from './WasteTable'; 
 import Dashboard from './Dashboard'; 
 
 export default function App() {
