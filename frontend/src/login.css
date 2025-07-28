@@ -1,0 +1,113 @@
+/* login.css */
+
+/* Full page background image */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  background-color: rgba(255, 255, 255, 0.92);
+  padding: 40px 35px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  width: 380px;
+  max-width: 90%;
+  text-align: center;
+  box-sizing: border-box; /* include padding & border in width */
+  margin: 40px auto; /* center container with margin */
+  position: relative;
+  z-index: 10;
+}
+
+.login-container form input[type="text"],
+.login-container form input[type="password"],
+.login-container form input[type="email"] {
+  width: 100%;          /* full width of container */
+  padding: 12px 15px;   /* consistent padding */
+  margin-bottom: 15px;  /* spacing between inputs */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box; /* includes padding and border in width */
+  display: block;
+}
+
+/* Header style */
+h2 {
+  color: #4b0082;
+  font-size: 50px;
+  margin-bottom: 25px;
+  font-weight: 700;
+}
+
+/* Input fields styling */
+form input {
+  display: block;
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  border: 1.8px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+form input:focus {
+  outline: none;
+  border-color: #6a11cb;
+  box-shadow: 0 0 8px #6a11cb;
+}
+
+/* Submit button */
+form button {
+  width: 100%;
+  padding: 15px;
+  background-color: #6a11cb;
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #4b0082;
+}
+
+/* Toggle Register/Login text */
+.toggle-text {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #4b0082;
+}
+
+/* Toggle link styling */
+.toggle-link {
+  color: #6a11cb;
+  cursor: pointer;
+  font-weight: 700;
+  text-decoration: underline;
+  margin-left: 5px;
+}
+
+/* Message for success or error */
+.message {
+  margin-top: 20px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #d32f2f; /* Default error red */
+}
+
+.message.success {
+  color: #2e7d32; /* Success green */
+}
