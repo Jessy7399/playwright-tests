@@ -2,15 +2,18 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  timeout: 200000,
+  timeout: 300000,
   fullyParallel: true,
-  reporter: 'html',
+  reporter: [['html', { open: 'on-failure', port: 9330 }]],
+
   use: {
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     headless: false,
     slowMo: 250,
+    video: 'on',
   },
+
   webServer: [
     {
       command: 'npm start',
@@ -27,15 +30,13 @@ export default defineConfig({
       timeout: 120 * 1000,
     },
   ],
-  use: {
-    video: 'on',
-  },
+
   projects: [
-    // Desktop browsers
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    // Uncomment below to run on more browsers/devices
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
@@ -44,8 +45,6 @@ export default defineConfig({
     //   name: 'webkit',
     //   use: { ...devices['Desktop Safari'] },
     // },
-
-    // // Mobile devices
     // {
     //   name: 'Pixel 5',
     //   use: { ...devices['Pixel 5'] },

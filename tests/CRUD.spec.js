@@ -31,12 +31,17 @@ test('CRUD', async ({ page }) => {
   // Login Page - Register link
   const registerLink = page.locator('.toggle-link', { hasText: 'Register' });
   await expect(registerLink).toBeVisible();
+  await page.waitForTimeout(2000);
+  await page.screenshot({ path: 'elements.png', fullPage: true });
 
   // Login with empty fields
   await loginbutton.click();
+  await page.screenshot({ path: 'emptyfield.png' });
   await expect(page).toHaveURL('http://localhost:3000');
   await expect(username).toHaveValue('');
   await expect(password).toHaveValue('');
+  await page.waitForTimeout(2000);
+  
 
   // Invalid username
   await page.waitForTimeout(2000);
@@ -47,6 +52,7 @@ test('CRUD', async ({ page }) => {
   await page.waitForTimeout(2000);
   const errorMessage = page.locator('text=User not found');
   await expect(errorMessage).toBeVisible({ timeout: 10000 });
+  await page.screenshot({ path: 'invalidusern.png' });
   
   await page.waitForTimeout(2000);
   await username.fill('');
@@ -62,6 +68,7 @@ test('CRUD', async ({ page }) => {
   await loginbutton.click();
   const errorMessage1 = page.locator('text=Invalid password');
   await expect(errorMessage1).toBeVisible({ timeout: 10000 });
+  await page.screenshot({ path: 'invalidpass.png' });
 
   await page.waitForTimeout(2000);
   await username.fill('');
@@ -77,6 +84,7 @@ test('CRUD', async ({ page }) => {
   await loginbutton.click();
   const errorMessage2 = page.locator('text=User not found');
   await expect(errorMessage2).toBeVisible({ timeout: 10000 });
+  await page.screenshot({ path: 'invaliduspas.png' });
   
   await page.waitForTimeout(2000);
   await username.fill('');
@@ -100,6 +108,7 @@ test('CRUD', async ({ page }) => {
   await page.waitForTimeout(2000);
   await expect(registerbutton).toBeVisible();
   await registerbutton.click();
+  await page.screenshot({ path: 'existinguser.png' });
   const errorMessage3 = page.locator('text=Username or email already exists');
   await expect(errorMessage3).toBeVisible({ timeout: 10000 });
 
@@ -118,6 +127,7 @@ test('CRUD', async ({ page }) => {
   await expect(registerbutton2).toBeVisible();
   await registerbutton2.click();
   await page.waitForTimeout(2000);
+  await page.screenshot({ path: 'passmismatch.png' });
   const errorMessage4 = page.locator('text=Passwords do not match');
   await expect(errorMessage4).toBeVisible({ timeout: 10000 });
 
@@ -139,6 +149,7 @@ test('CRUD', async ({ page }) => {
   await expect(page).toHaveURL('http://localhost:3000/');
   await page.waitForTimeout(2000);
   await expect(page.locator('text=User registered successfully!')).toBeVisible();
+  await page.screenshot({ path: 'regsuccess.png' });
 
   // Login using valid creds
   await page.waitForTimeout(2000);
@@ -148,6 +159,7 @@ test('CRUD', async ({ page }) => {
   await loginbutton.click();
   await page.waitForTimeout(2000);
   await expect(page).toHaveURL('http://localhost:3000/waste');
+  await page.screenshot({ path: 'dashelements.png' });
 
   //Dashboard page UI element check
   //Dashboard heading
@@ -192,6 +204,9 @@ test('CRUD', async ({ page }) => {
     await page.waitForTimeout(2000);
     await expect(table).toContainText('Berlin');
     await page.waitForTimeout(2000);
+    await page.screenshot({ path: 'searchloc.png' });
+    await page.waitForTimeout(2000);
+
   //Seacrh function with type
     const searchInput1 = page.getByPlaceholder('Search by location, type or status...');
     await page.waitForTimeout(2000);
@@ -204,6 +219,9 @@ test('CRUD', async ({ page }) => {
     await expect(table1).toContainText('Berlin');
     await expect(table1).toContainText('Stuttgart');
     await page.waitForTimeout(2000);
+    await page.screenshot({ path: 'searchtype.png' });
+    await page.waitForTimeout(2000);
+
   //Seacrh function with collected option
     const searchInput3 = page.getByPlaceholder('Search by location, type or status...');
     await searchInput3.click();
@@ -221,6 +239,25 @@ test('CRUD', async ({ page }) => {
     await expect(table2).toContainText('Hamburg');
     await expect(table2).toContainText('Frankfurt');
     await expect(table2).toContainText('Stuttgart');
+    await page.waitForTimeout(2000);
+    await page.screenshot({ path: 'searchstat.png' });
+
+    //Create function with insufficient data
+    page.once('dialog', async dialog => {
+    expect(dialog.message()).toBe('Please fill in all fields for the new entry.');
+    await dialog.accept();
+    });
+    await page.waitForTimeout(2000);
+    await page.getByPlaceholder('Location', { exact: true }).fill('Testnew');
+    await page.waitForTimeout(2000);
+    await page.getByPlaceholder('Weight (kg)').fill('20');
+    await page.waitForTimeout(2000);
+    await page.locator('select[name="collected"]').selectOption('No');
+    await page.waitForTimeout(2000);
+    await page.getByRole('button', { name: 'Add New' }).click();
+    const table0 = page.locator('table');
+    await expect(table0).not.toContainText('Please fill in all fields for the new entry.');
+    await page.waitForTimeout(2000);
 
     //Create function
     await page.waitForTimeout(2000);
@@ -245,6 +282,8 @@ test('CRUD', async ({ page }) => {
     const table3 = page.locator('table');
     await page.waitForTimeout(2000);
     await expect(table3).toContainText('Testnew');
+    await page.waitForTimeout(2000);
+    await page.screenshot({ path: 'createnewdata.png' });
 
     //Seacrh funtion for non-existing data
     await page.waitForTimeout(2000);
@@ -257,6 +296,9 @@ test('CRUD', async ({ page }) => {
     const empty = page.getByText('No data found');
     await page.waitForTimeout(2000);
     await expect(empty).toBeVisible();
+    await page.waitForTimeout(2000);
+    await page.screenshot({ path: 'searchnonexisit.png' });
+
 
     //Edit data
     await page.waitForTimeout(2000);
@@ -300,34 +342,65 @@ test('CRUD', async ({ page }) => {
     await page.waitForTimeout(2000);
     await expect(table4).toContainText('Berlin new')
     await page.waitForTimeout(2000);
-
-    //Delete data
-    const searchInput9 = page.getByPlaceholder('Search by location, type or status...');
+    await page.screenshot({ path: 'editdata.png' });
     await page.waitForTimeout(2000);
-    await searchInput9.click();
+
+    //Delete data with yes option
+    const searchInput9 = page.getByPlaceholder('Search by location, type or status...');
     await page.waitForTimeout(2000);
     await searchInput9.fill('Bonn');
     await page.waitForTimeout(2000);
     const table6 = page.locator('table');
     await page.waitForTimeout(2000);
-    await expect(table6).toContainText('Bonn')
+    await expect(table6).toContainText('Bonn');
     await page.waitForTimeout(2000);
-    const deleteButton = page.getByRole('button', { name: 'Delete' });
-    await page.waitForTimeout(2000);
-    await expect(deleteButton).toBeVisible();
+    const deleteButton = page.getByRole('button', { name: 'Delete' }).first();  
+    page.once('dialog', async dialog => {
+    expect(dialog.message()).toBe('Are you sure you want to delete this entry?');
+    await dialog.accept();  
+    });
     await page.waitForTimeout(2000);
     await deleteButton.click();
     await page.waitForTimeout(2000);
     const searchInput10 = page.getByPlaceholder('Search by location, type or status...');
     await page.waitForTimeout(2000);
-    await searchInput10.click();
-    await page.waitForTimeout(2000);
-    await searchInput10.fill('Bonn');
+    await searchInput10.fill('Bonn');   
     await page.waitForTimeout(2000);
     const empty1 = page.getByText('No data found');
     await page.waitForTimeout(2000);
     await expect(empty1).toBeVisible();
     await page.waitForTimeout(2000);
+    await page.screenshot({ path: 'deletedata.png' });
+    await page.waitForTimeout(2000);
+
+    //Delete data with cancel option
+    const searchInput11 = page.getByPlaceholder('Search by location, type or status...');
+    await page.waitForTimeout(2000);
+    await searchInput11.fill('Nuremberg');
+    await page.waitForTimeout(2000);
+    const table7 = page.locator('table');
+    await page.waitForTimeout(2000);
+    await expect(table7).toContainText('Nuremberg');
+    await page.waitForTimeout(2000);
+    const deleteButton1 = page.getByRole('button', { name: 'Delete' }).first(); 
+    await page.waitForTimeout(2000);
+    page.once('dialog', async dialog => {
+    expect(dialog.message()).toBe('Are you sure you want to delete this entry?');
+    await dialog.dismiss();
+    });
+    await page.waitForTimeout(2000);
+    await deleteButton1.click();
+    await page.waitForTimeout(2000);
+    const searchInput12 = page.getByPlaceholder('Search by location, type or status...');
+    await page.waitForTimeout(2000);
+    await searchInput12.fill('Nuremberg');   
+    await page.waitForTimeout(2000);
+    const table8 = page.locator('table');
+    await page.waitForTimeout(2000);
+    await expect(table8).toContainText('Nuremberg');
+    await page.waitForTimeout(2000);
+    await page.screenshot({ path: 'deletedata1.png' });
+
 
     //Log out button
     await page.waitForTimeout(2000);
